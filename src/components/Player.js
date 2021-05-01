@@ -1,9 +1,15 @@
 /*Shows song, artist, and time*/
-import React from 'react'
+import React, {useRef} from 'react'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPlay, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons';
 
-const Player = () =>{
+const Player = ({currentSong}) =>{
+    //We need the html reference to our audio
+    const audioRef = useRef(null);
+    //Event Handleres
+    const playSongHandler = () => {
+        console.log(audioRef);
+    }
     return(
         <div className="player">
             <h1>Player</h1>
@@ -16,9 +22,13 @@ const Player = () =>{
 
             <div className="play-icon">
                 <FontAwesomeIcon className="skip-back" size="2x" icon={faAngleLeft}/>
-                <FontAwesomeIcon className="play" size="2x" icon={faPlay}/>
+                <FontAwesomeIcon onClick={playSongHandler} className="play" size="2x" icon={faPlay}/>
                 <FontAwesomeIcon className="skip-forward" size="2x" icon={faAngleRight}/>
             </div>
+
+            <audio ref={audioRef} src={currentSong.audio}>
+
+            </audio>
 
         </div>
     );
