@@ -2,7 +2,7 @@
 import React, {useRef, useState} from 'react'
 //Let's import everything Fontawesome related
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'; 
-import {faPlay, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'; //imports fa-icons
+import {faPlay, faPause, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'; //imports fa-icons
 
 const Player = ({currentSong, isPlaying, setIsPlaying}) =>{
     //We need the html reference to our audio
@@ -29,11 +29,15 @@ const Player = ({currentSong, isPlaying, setIsPlaying}) =>{
         const duration = e.target.duration;
         setSongInfo({...songInfo, currentTime: current, duration});
     }
+    const dragHandler = (e) => {
+        audioRef.current.currentTime = e.target.value;
+        setSongInfo({...songInfo, currentTime: e.target.value});
+    }
 
     //State
     const [songInfo, setSongInfo] = useState({
-        currentTime: null,
-        duration: null
+        currentTime: 0,
+        duration: 0
     })
     return(
         <div className="player">
@@ -41,13 +45,18 @@ const Player = ({currentSong, isPlaying, setIsPlaying}) =>{
 
             <div className="time-control">
                 <p>{getTime(songInfo.currentTime)}</p>
-                <input type="range" />
+                <input 
+                    type="range" 
+                    value={songInfo.currentTime} 
+                    min={0} 
+                    max={songInfo.duration}
+                    onChange={dragHandler}/>
                 <p>{getTime(songInfo.duration)}</p>
             </div>
 
             <div className="play-icon">
                 <FontAwesomeIcon className="skip-back" size="2x" icon={faAngleLeft}/>
-                <FontAwesomeIcon onClick={playSongHandler} className="play" size="2x" icon={faPlay}/>
+                <FontAwesomeIcon onClick={playSongHandler} className="play" size="2x" icon={isPlaying ? faPause : faPlay}/>
                 <FontAwesomeIcon className="skip-forward" size="2x" icon={faAngleRight}/>
             </div>
 
