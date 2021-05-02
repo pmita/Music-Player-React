@@ -10,7 +10,7 @@ import data from './utility_db';
 
 function App() {
   //Let's create our State
-  const [songs, useSongs] = useState(data());
+  const [songs, setSongs] = useState(data());
   const [currentSong, setCurrentSong] = useState(songs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -40,7 +40,8 @@ function App() {
         audioRef={audioRef}
         songs={songs}
         setCurrentSong={setCurrentSong}
-        isPlaying={isPlaying}/>
+        isPlaying={isPlaying}
+        setSongs={setSongs}/>
       
       <audio 
           onTimeUpdate={timeUpdateHandler}

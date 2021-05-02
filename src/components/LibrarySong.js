@@ -1,10 +1,18 @@
 /*Shows song, artist, and time*/
 import React from 'react';
 
-const LibrarySong = ({audioRef, songs,song,setCurrentSong, id, isPlaying}) =>{
+const LibrarySong = ({audioRef, songs,song,setCurrentSong, id, isPlaying, setSongs}) =>{
     /*------------Event Hndleres---------*/
     const songSelectHandler = () => {
         setCurrentSong(song);
+        const newSongs = songs.map( song => {
+            if (song.id === id){
+                return {...song,active: true};
+            } else {
+                return {...song,active: false};
+            }
+        });
+        setSongs(newSongs);
         //audioRef.current.play();
         if( isPlaying ){
             const playPromise = audioRef.current.play();
@@ -16,7 +24,7 @@ const LibrarySong = ({audioRef, songs,song,setCurrentSong, id, isPlaying}) =>{
         }
     }
     return(
-        <div onClick={songSelectHandler} className="library-song">
+        <div onClick={songSelectHandler} className={`library-song ${song.active ? 'selected' : ''}`} >
             <img src={song.cover} alt={song.name}/>
             <div className="song-description">
                 <h3>{song.name}</h3>
