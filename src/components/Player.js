@@ -1,7 +1,5 @@
 /*Shows song, artist, and time*/
 import React, {useEffect} from 'react';
-//Import utilify function
-import {playAudio} from '../utility_function';
 //Let's import everything Fontawesome related
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'; 
 import {faPlay, faPause, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'; //imports fa-icons
@@ -38,19 +36,20 @@ const Player = ({audioRef, currentSong, setCurrentSong, isPlaying, setIsPlaying,
         audioRef.current.currentTime = e.target.value;
         setSongInfo({...songInfo, currentTime: e.target.value});
     }
-    const skipTrackHandler = (direction) => {
+    const skipTrackHandler = async (direction) => {
         let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
         if(direction === 'skip-forward'){
-            setCurrentSong(songs[(currentIndex + 1) % songs.length]); //To reset once we reach the last array cell
+            await setCurrentSong(songs[(currentIndex + 1) % songs.length]); //To reset once we reach the last array cell
         }
         if(direction === 'skip-back'){
             if((currentIndex -1) % songs.length === -1){
-                setCurrentSong( songs.length -1 );
+                await setCurrentSong( songs.length -1 );
+                if (isPlaying) { audioRef.current.play();}
                 return;
             }
-            setCurrentSong(songs[(currentIndex - 1) % songs.length]); //To reset once we reach the first array cell
+            await setCurrentSong(songs[(currentIndex - 1) % songs.length]); //To reset once we reach the first array cell
         }
-        playAudio(isPlaying, audioRef);
+        if (isPlaying) { audioRef.current.play();}
     }
 
     return(
@@ -65,7 +64,7 @@ const Player = ({audioRef, currentSong, setCurrentSong, isPlaying, setIsPlaying,
                     min={0} 
                     max={songInfo.duration || 0}
                     onChange={dragHandler}/>
-                <p>{getTime(songInfo.duration)}</p>
+                <p>{songInfo.duration ? getTime(songInfo.duration) : '0:00'}</p>
             </div>
 
             <div className="play-icon">

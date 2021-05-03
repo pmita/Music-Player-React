@@ -8,8 +8,6 @@ import Library from './components/Library';
 import Nav from './components/Nav';
 //ImportUtility bd 
 import data from './utility_db';
-//Import utilify function
-import {playAudio} from './utility_function';
 
 function App() {
   //Let's create our State
@@ -28,6 +26,11 @@ const [libraryStatus, setLibraryStatus] = useState(false);
     const current = e.target.currentTime;
     const duration = e.target.duration;
     setSongInfo({...songInfo, currentTime: current, duration});
+  }
+  const songEndHandler = async () => {
+    let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
+    await setCurrentSong(songs[(currentIndex + 1) % songs.length]); //To reset once we reach the last array cell
+    if(isPlaying) { audioRef.current.play();}
   }
   return (
     <div className="App">
@@ -57,6 +60,7 @@ const [libraryStatus, setLibraryStatus] = useState(false);
           onLoadedMetadata={timeUpdateHandler} 
           ref={audioRef} 
           src={currentSong.audio}
+          onEnded={songEndHandler}
       ></audio>
       
     </div>
