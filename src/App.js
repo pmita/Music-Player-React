@@ -34,10 +34,12 @@ const [libraryStatus, setLibraryStatus] = useState(false);
       <Player 
         audioRef={audioRef}
         currentSong={currentSong}
+        setCurrentSong={setCurrentSong}
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         setSongInfo={setSongInfo}
         songInfo={songInfo}
+        songs={songs}
       />
       <Library 
         audioRef={audioRef}
