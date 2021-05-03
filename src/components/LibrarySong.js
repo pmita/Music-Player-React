@@ -1,5 +1,7 @@
 /*Shows song, artist, and time*/
 import React from 'react';
+//Import utilify function
+import {playAudio} from '../utility_function';
 
 const LibrarySong = ({audioRef, songs,song,setCurrentSong, id, isPlaying, setSongs}) =>{
     /*------------Event Hndleres---------*/
@@ -14,6 +16,7 @@ const LibrarySong = ({audioRef, songs,song,setCurrentSong, id, isPlaying, setSon
         });
         setSongs(newSongs);
         //audioRef.current.play();
+        playAudio(isPlaying, audioRef);
         if( isPlaying ){
             const playPromise = audioRef.current.play();
             if(playPromise !== undefined){

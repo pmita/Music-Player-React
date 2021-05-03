@@ -1,10 +1,23 @@
 /*Shows song, artist, and time*/
-import React from 'react'
+import React, {useEffect} from 'react';
+//Import utilify function
+import {playAudio} from '../utility_function';
 //Let's import everything Fontawesome related
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'; 
 import {faPlay, faPause, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'; //imports fa-icons
 
-const Player = ({audioRef, currentSong, setCurrentSong, isPlaying, setIsPlaying, setSongInfo, songInfo, songs}) =>{
+const Player = ({audioRef, currentSong, setCurrentSong, isPlaying, setIsPlaying, setSongInfo, songInfo, songs, setSongs}) =>{
+    //UseEffect section
+    useEffect( () => {
+        const newSongs = songs.map( song => {
+            if (song.id === currentSong.id){
+                return {...song,active: true};
+            } else {
+                return {...song,active: false};
+            }
+        });
+        setSongs(newSongs);
+    }, [currentSong]);
     //Event Handleres
     const playSongHandler = () => {
         if(isPlaying){
@@ -28,15 +41,16 @@ const Player = ({audioRef, currentSong, setCurrentSong, isPlaying, setIsPlaying,
     const skipTrackHandler = (direction) => {
         let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
         if(direction === 'skip-forward'){
-            setCurrentSong(song[(currentIndex + 1) % songs.length]); //To reset once we reach the last array cell
+            setCurrentSong(songs[(currentIndex + 1) % songs.length]); //To reset once we reach the last array cell
         }
         if(direction === 'skip-back'){
             if((currentIndex -1) % songs.length === -1){
                 setCurrentSong( songs.length -1 );
                 return;
             }
-            setCurrentSong(song[(currentIndex - 1) % songs.length]); //To reset once we reach the first array cell
+            setCurrentSong(songs[(currentIndex - 1) % songs.length]); //To reset once we reach the first array cell
         }
+        playAudio(isPlaying, audioRef);
     }
 
     return(

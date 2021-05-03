@@ -8,6 +8,8 @@ import Library from './components/Library';
 import Nav from './components/Nav';
 //ImportUtility bd 
 import data from './utility_db';
+//Import utilify function
+import {playAudio} from './utility_function';
 
 function App() {
   //Let's create our State
@@ -40,6 +42,7 @@ const [libraryStatus, setLibraryStatus] = useState(false);
         setSongInfo={setSongInfo}
         songInfo={songInfo}
         songs={songs}
+        setSongs={setSongs}
       />
       <Library 
         audioRef={audioRef}
