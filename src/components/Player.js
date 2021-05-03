@@ -1,5 +1,5 @@
 /*Shows song, artist, and time*/
-import React, {useState} from 'react'
+import React from 'react'
 //Let's import everything Fontawesome related
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'; 
 import {faPlay, faPause, faAngleLeft, faAngleRight} from '@fortawesome/free-solid-svg-icons'; //imports fa-icons
@@ -37,7 +37,7 @@ const Player = ({audioRef, currentSong, isPlaying, setIsPlaying, setSongInfo, so
                     type="range" 
                     value={songInfo.currentTime} 
                     min={0} 
-                    max={songInfo.duration}
+                    max={songInfo.duration || 0}
                     onChange={dragHandler}/>
                 <p>{getTime(songInfo.duration)}</p>
             </div>
